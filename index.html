@@ -25,7 +25,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
-            <p class="text-slate-400 text-sm">v10</p>
+            <p class="text-slate-400 text-sm">v11</p>
         </header>
 
         <!-- Filtres -->
@@ -178,15 +178,12 @@
             });
         }
 
-        // Convertit une date (ex: "15/05/2026", "2026-05-15" ou format texte) en objet Date ou extrait mois/année de manière robuste
         function parseDateInfo(dateStr) {
             if (!dateStr) return { month: "", year: "" };
             
-            // Cherche une année à 4 chiffres
             const yearMatch = dateStr.match(/\b(20\d{2})\b/);
             const year = yearMatch ? yearMatch[1] : "";
 
-            // Cherche un mois numérique direct (ex: 05 ou 5) ou détecte les noms de mois français
             let month = "";
             const monthsMap = {
                 "janvier": "01", "février": "02", "fevrier": "02", "mars": "03", 
@@ -203,16 +200,12 @@
                 }
             }
 
-            // Si aucun nom trouvé, essaie de parser les formats numériques courants (JJ/MM/AAAA ou AAAA-MM-JJ)
             if (!month) {
                 const parts = dateStr.split(/[\/\-\.]/);
                 if (parts.length >= 3) {
-                    // Si le premier fait 4 chiffres (AAAA-MM-JJ)
                     if (parts[0].length === 4 && parts[1].length <= 2) {
                         month = parts[1].padStart(2, '0');
-                    } 
-                    // Si le troisième fait 4 chiffres (JJ/MM/AAAA)
-                    else if (parts[2].length === 4 && parts[1].length <= 2) {
+                    } else if (parts[2].length === 4 && parts[1].length <= 2) {
                         month = parts[1].padStart(2, '0');
                     }
                 }
@@ -261,9 +254,12 @@
 
         function filterData() {
             const musician = document.getElementById("filterMusician").value.toLowerCase();
-            const selectedMonth = document.getElementById("filterMonth").value; // ex: "05" ou "Tous"
-            const selectedYear = document.getElementById("filterYear").value;   // ex: "2026" ou "Toutes"
-            const search = document.getElementById("searchInput").value.toLowerCase();
+            const selectedMonth = document.getElementById("filterMonth").value;
+            const selectedYear = document.getElementById("filterYear").value;
+            const rawSearch = document.getElementById("searchInput").value.toLowerCase().trim();
+            
+            // Découpe la recherche par mots (ex: "flo absent" devient ["flo", "absent"])
+            const searchWords = rawSearch ? rawSearch.split(/\s+/) : [];
 
             const filtered = allData.filter(row => {
                 const rowString = row.join(" ").toLowerCase();
@@ -271,11 +267,11 @@
                 const dateInfo = parseDateInfo(dateVal);
 
                 const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => cell.toLowerCase().includes(musician));
-                
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
 
-                const matchSearch = search === "" || rowString.includes(search);
+                // Vérifie que CHAQUE mot tapé est présent dans la ligne, peu importe l'ordre
+                const matchSearch = searchWords.every(word => rowString.includes(word));
 
                 return matchMusician && matchMonth && matchYear && matchSearch;
             });
