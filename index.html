@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Jam Sessions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        borderCol: '#334155'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen p-4 md:p-8 font-sans">
+    <div class="max-w-6xl mx-auto">
+        <!-- En-tête -->
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
+            <p class="text-slate-400 text-sm">Vue centralisée et mise à jour en direct</p>
+        </header>
+
+        <!-- Filtres -->
+        <div class="bg-cardBg border border-borderCol rounded-xl p-4 md:p-6 mb-6 shadow-lg flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex flex-wrap gap-4 items-center w-full md:w-auto">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Musicien</label>
+                    <select id="filterMusician" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                        <option value="Tous">Tous les musiciens</option>
+                        <option value="Nas">Nas</option>
+                        <option value="Shan">Shan</option>
+                        <option value="Mat">Mat</option>
+                        <option value="Flo">Flo</option>
+                        <option value="Tony">Tony</option>
+                        <option value="Jo">Jo</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Mois</label>
+                    <select id="filterMonth" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                        <option value="Tous">Tous les mois</option>
+                        <option value="janvier">Janvier</option>
+                        <option value="février">Février</option>
+                        <option value="mars">Mars</option>
+                        <option value="avril">Avril</option>
+                        <option value="mai">Mai</option>
+                        <option value="juin">Juin</option>
+                        <option value="juillet">Juillet</option>
+                        <option value="août">Août</option>
+                        <option value="septembre">Septembre</option>
+                        <option value="octobre">Octobre</option>
+                        <option value="novembre">Novembre</option>
+                        <option value="décembre">Décembre</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Année</label>
+                    <select id="filterYear" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                        <option value="Toutes">Toutes les années</option>
+                    </select>
+                </div>
+            </div>
+            <div class="w-full md:w-auto flex-1 max-w-xs">
+                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Recherche</label>
+                <input type="text" id="searchInput" placeholder="Filtrer par mot-clé..." class="w-full bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+            </div>
+        </div>
+
+        <!-- Tableau des données -->
+        <div class="bg-cardBg border border-borderCol rounded-xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800/80 border-b border-borderCol text-slate-300 text-xs uppercase tracking-wider text-center">
+                            <th class="p-4 font-semibold">Date</th>
+                            <th class="p-4 font-semibold">Cachet 1</th>
+                            <th class="p-4 font-semibold">Cachet 2</th>
+                            <th class="p-4 font-semibold">Chant</th>
+                            <th class="p-4 font-semibold">Drums</th>
+                            <th class="p-4 font-semibold">Basse</th>
+                            <th class="p-4 font-semibold">Clavier</th>
+                            <th class="p-4 font-semibold">Commentaires</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-borderCol text-sm text-center">
+                        <tr>
+                            <td colspan="8" class="p-8 text-slate-400 text-center">Chargement des données du planning...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // REMPLACE CETTE URL PAR TON LIEN D'EXPORT CSV GOOGLE SHEETS
+        const SHEET_CSV_URL = "METS_TON_LIEN_CSV_ICI";
+
+        let allData = [];
+
+        // Couleurs adaptées daltoniens et bien contrastées pour les cachets
+        function getMusicianBadge(name) {
+            if (!name || name.trim() === "") return "";
+            const cleanName = name.trim().toLowerCase();
+            
+            let bgClass = "bg-slate-700 text-slate-100";
+            if (cleanName.includes("nas")) bgClass = "bg-purple-900 text-purple-200 border border-purple-500";
+            else if (cleanName.includes("shan")) bgClass = "bg-amber-400 text-slate-950 font-bold";
+            else if (cleanName.includes("mat")) bgClass = "bg-orange-600 text-white font-bold";
+            else if (cleanName.includes("flo")) bgClass = "bg-cyan-700 text-cyan-100";
+            else if (cleanName.includes("tony")) bgClass = "bg-rose-700 text-rose-100";
+            else if (cleanName.includes("jo")) bgClass = "bg-emerald-600 text-emerald-50 font-bold";
+
+            return `<span class="px-2.5 py-1 rounded-md text-xs inline-block ${bgClass}">${name}</span>`;
+        }
+
+        async function loadSheetData() {
+            if (SHEET_CSV_URL.includes("METS_TON_LIEN_CSV_ICI")) {
+                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-amber-400 text-center">⚠️ Veuillez configurer votre lien CSV Google Sheets dans le code JavaScript de la page.</td></tr>`;
+                return;
+            }
+
+            try {
+                const response = await fetch(SHEET_CSV_URL);
+                const csvText = await response.text();
+                parseCSV(csvText);
+            } catch (error) {
+                console.error("Erreur de chargement:", error);
+                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-rose-400 text-center">Erreur lors du chargement des données du Google Sheet. Vérifiez le partage public.</td></tr>`;
+            }
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n').map(line => {
+                const row = [];
+                let inQuotes = false, current = '';
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') inQuotes = !inQuotes;
+                    else if (char === ',' && !inQuotes) { row.push(current.trim()); current = ''; }
+                    else current += char;
+                }
+                row.push(current.trim());
+                return row;
+            });
+
+            if (lines.length > 1) {
+                allData = lines.slice(1).filter(row => row.length >= 8 && row[0] !== "");
+                populateYearFilter();
+                renderTable(allData);
+            } else {
+                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400 text-center">Aucune donnée trouvée dans le tableau.</td></tr>`;
+            }
+        }
+
+        function populateYearFilter() {
+            const years = [...new Set(allData.map(row => {
+                const dateVal = row[0];
+                const match = dateVal.match(/\b(20\d{2})\b/);
+                return match ? match[1] : null;
+            }).filter(Boolean))].sort();
+
+            const yearSelect = document.getElementById("filterYear");
+            yearSelect.innerHTML = '<option value="Toutes">Toutes les années</option>';
+            years.forEach(y => {
+                yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
+            });
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById("tableBody");
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400 text-center">Aucune session correspondante.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(row => {
+                const date = row[0] || "";
+                let cachet1 = row[1] || "";
+                let cachet2 = row[2] || "";
+                const net1 = row[9] || ""; // Net 1
+                const net2 = row[10] || ""; // Net 2
+                const chant = row[3] || "";
+                const drums = row[4] || "";
+                const basse = row[5] || "";
+                const clavier = row[6] || "";
+                let commentaires = row[7] || "/";
+                if (commentaires.trim() === "") commentaires = "/";
+
+                // Intégration des Net 1 & Net 2 entre parenthèses dans Cachet 1 & 2
+                if (net1.trim() !== "") cachet1 += ` (${net1})`;
+                if (net2.trim() !== "") cachet2 += ` (${net2})`;
+
+                return `
+                    <tr class="hover:bg-slate-800/50 transition-colors">
+                        <td class="p-4 font-medium text-white">${date}</td>
+                        <td class="p-4">${getMusicianBadge(cachet1)}</td>
+                        <td class="p-4">${getMusicianBadge(cachet2)}</td>
+                        <td class="p-4 text-slate-300">${chant}</td>
+                        <td class="p-4 text-slate-300">${drums}</td>
+                        <td class="p-4 text-slate-300">${basse}</td>
+                        <td class="p-4 text-slate-300">${clavier}</td>
+                        <td class="p-4 text-slate-400 italic">${commentaires}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterData() {
+            const musician = document.getElementById("filterMusician").value.toLowerCase();
+            const month = document.getElementById("filterMonth").value.toLowerCase();
+            const year = document.getElementById("filterYear").value;
+            const search = document.getElementById("searchInput").value.toLowerCase();
+
+            const filtered = allData.filter(row => {
+                const rowString = row.join(" ").toLowerCase();
+                const dateVal = row[0].toLowerCase();
+
+                // Filtre musicien (cherche dans toute la ligne ou spécifiquement colonnes instruments/cachets)
+                const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => cell.toLowerCase().includes(musician));
+                
+                // Filtre mois
+                const matchMonth = month === "tous" || dateVal.includes(month);
+
+                // Filtre année
+                const matchYear = year === "toutes" || dateVal.includes(year);
+
+                // Recherche textuelle globale
+                const matchSearch = search === "" || rowString.includes(search);
+
+                return matchMusician && matchMonth && matchYear && matchSearch;
+            });
+
+            renderTable(filtered);
+        }
+
+        document.getElementById("filterMusician").addEventListener("change", filterData);
+        document.getElementById("filterMonth").addEventListener("change", filterData);
+        document.getElementById("filterYear").addEventListener("change", filterData);
+        document.getElementById("searchInput").addEventListener("input", filterData);
+
+        // Lancement au chargement de la page
+        loadSheetData();
+    </script>
+</body>
+</html>
