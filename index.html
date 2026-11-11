@@ -25,7 +25,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
-            <p class="text-slate-400 text-sm">Vue centralisée et mise à jour en direct</p>
+            <p class="text-slate-400 text-sm">v10</p>
         </header>
 
         <!-- Filtres -->
@@ -41,24 +41,29 @@
                         <option value="Flo">Flo</option>
                         <option value="Tony">Tony</option>
                         <option value="Jo">Jo</option>
+                        <option value="Lauralyn">Lauralyn</option>
+                        <option value="Rhodes">Rhodes</option>
+                        <option value="Félix">Félix</option>
+                        <option value="Obed">Obed</option>
+                        <option value="PL">PL</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Mois</label>
                     <select id="filterMonth" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
                         <option value="Tous">Tous les mois</option>
-                        <option value="janvier">Janvier</option>
-                        <option value="février">Février</option>
-                        <option value="mars">Mars</option>
-                        <option value="avril">Avril</option>
-                        <option value="mai">Mai</option>
-                        <option value="juin">Juin</option>
-                        <option value="juillet">Juillet</option>
-                        <option value="août">Août</option>
-                        <option value="septembre">Septembre</option>
-                        <option value="octobre">Octobre</option>
-                        <option value="novembre">Novembre</option>
-                        <option value="décembre">Décembre</option>
+                        <option value="01">Janvier</option>
+                        <option value="02">Février</option>
+                        <option value="03">Mars</option>
+                        <option value="04">Avril</option>
+                        <option value="05">Mai</option>
+                        <option value="06">Juin</option>
+                        <option value="07">Juillet</option>
+                        <option value="08">Août</option>
+                        <option value="09">Septembre</option>
+                        <option value="10">Octobre</option>
+                        <option value="11">Novembre</option>
+                        <option value="12">Décembre</option>
                     </select>
                 </div>
                 <div>
@@ -116,6 +121,11 @@
             else if (cleanName.includes("flo")) bgClass = "bg-cyan-700 text-cyan-100";
             else if (cleanName.includes("tony")) bgClass = "bg-rose-700 text-rose-100";
             else if (cleanName.includes("jo")) bgClass = "bg-emerald-600 text-emerald-50 font-bold";
+            else if (cleanName.includes("lauralyn")) bgClass = "bg-pink-700 text-pink-100";
+            else if (cleanName.includes("rhodes")) bgClass = "bg-yellow-600 text-slate-950 font-bold";
+            else if (cleanName.includes("félix") || cleanName.includes("felix")) bgClass = "bg-blue-600 text-white font-bold";
+            else if (cleanName.includes("obed")) bgClass = "bg-teal-700 text-teal-100";
+            else if (cleanName.includes("pl")) bgClass = "bg-indigo-700 text-indigo-100";
 
             return `<span class="px-2.5 py-1 rounded-md text-xs inline-block ${bgClass}">${name}</span>`;
         }
@@ -168,6 +178,49 @@
             });
         }
 
+        // Convertit une date (ex: "15/05/2026", "2026-05-15" ou format texte) en objet Date ou extrait mois/année de manière robuste
+        function parseDateInfo(dateStr) {
+            if (!dateStr) return { month: "", year: "" };
+            
+            // Cherche une année à 4 chiffres
+            const yearMatch = dateStr.match(/\b(20\d{2})\b/);
+            const year = yearMatch ? yearMatch[1] : "";
+
+            // Cherche un mois numérique direct (ex: 05 ou 5) ou détecte les noms de mois français
+            let month = "";
+            const monthsMap = {
+                "janvier": "01", "février": "02", "fevrier": "02", "mars": "03", 
+                "avril": "04", "mai": "05", "juin": "06", "juillet": "07", 
+                "août": "08", "aout": "08", "septembre": "09", "octobre": "10", 
+                "novembre": "11", "décembre": "12", "decembre": "12"
+            };
+
+            const lowerDate = dateStr.toLowerCase();
+            for (const [name, num] of Object.entries(monthsMap)) {
+                if (lowerDate.includes(name)) {
+                    month = num;
+                    break;
+                }
+            }
+
+            // Si aucun nom trouvé, essaie de parser les formats numériques courants (JJ/MM/AAAA ou AAAA-MM-JJ)
+            if (!month) {
+                const parts = dateStr.split(/[\/\-\.]/);
+                if (parts.length >= 3) {
+                    // Si le premier fait 4 chiffres (AAAA-MM-JJ)
+                    if (parts[0].length === 4 && parts[1].length <= 2) {
+                        month = parts[1].padStart(2, '0');
+                    } 
+                    // Si le troisième fait 4 chiffres (JJ/MM/AAAA)
+                    else if (parts[2].length === 4 && parts[1].length <= 2) {
+                        month = parts[1].padStart(2, '0');
+                    }
+                }
+            }
+
+            return { month, year };
+        }
+
         function renderTable(data) {
             const tbody = document.getElementById("tableBody");
             if (data.length === 0) {
@@ -179,8 +232,8 @@
                 const date = row[0] || "";
                 let cachet1 = row[1] || "";
                 let cachet2 = row[2] || "";
-                const net1 = row[8] || ""; // 9ème colonne (index 8)
-                const net2 = row[9] || ""; // 10ème colonne (index 9)
+                const net1 = row[8] || ""; 
+                const net2 = row[9] || ""; 
                 const chant = row[3] || "";
                 const drums = row[4] || "";
                 const basse = row[5] || "";
@@ -208,17 +261,20 @@
 
         function filterData() {
             const musician = document.getElementById("filterMusician").value.toLowerCase();
-            const month = document.getElementById("filterMonth").value.toLowerCase();
-            const year = document.getElementById("filterYear").value;
+            const selectedMonth = document.getElementById("filterMonth").value; // ex: "05" ou "Tous"
+            const selectedYear = document.getElementById("filterYear").value;   // ex: "2026" ou "Toutes"
             const search = document.getElementById("searchInput").value.toLowerCase();
 
             const filtered = allData.filter(row => {
                 const rowString = row.join(" ").toLowerCase();
-                const dateVal = row[0].toLowerCase();
+                const dateVal = row[0];
+                const dateInfo = parseDateInfo(dateVal);
 
                 const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => cell.toLowerCase().includes(musician));
-                const matchMonth = month === "tous" || dateVal.includes(month);
-                const matchYear = year === "toutes" || dateVal.includes(year);
+                
+                const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
+                const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
+
                 const matchSearch = search === "" || rowString.includes(search);
 
                 return matchMusician && matchMonth && matchYear && matchSearch;
