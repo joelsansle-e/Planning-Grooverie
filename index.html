@@ -25,7 +25,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
-            <p class="text-slate-400 text-sm">v11</p>
+            <p class="text-slate-400 text-sm">v12</p>
         </header>
 
         <!-- Filtres -->
@@ -158,7 +158,7 @@
             if (lines.length > 1) {
                 allData = lines.slice(1).filter(row => row.length >= 8 && row[0] !== "");
                 populateYearFilter();
-                renderTable(allData);
+                filterData(); // Applique les filtres par défaut (dont l'année en cours)
             } else {
                 document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400 text-center">Aucune donnée trouvée dans le tableau.</td></tr>`;
             }
@@ -176,6 +176,12 @@
             years.forEach(y => {
                 yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
             });
+
+            // Sélectionne par défaut l'année en cours si elle existe dans la liste
+            const currentYear = new Date().getFullYear().toString();
+            if (years.includes(currentYear)) {
+                yearSelect.value = currentYear;
+            }
         }
 
         function parseDateInfo(dateStr) {
@@ -257,8 +263,6 @@
             const selectedMonth = document.getElementById("filterMonth").value;
             const selectedYear = document.getElementById("filterYear").value;
             const rawSearch = document.getElementById("searchInput").value.toLowerCase().trim();
-            
-            // Découpe la recherche par mots (ex: "flo absent" devient ["flo", "absent"])
             const searchWords = rawSearch ? rawSearch.split(/\s+/) : [];
 
             const filtered = allData.filter(row => {
@@ -269,8 +273,6 @@
                 const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => cell.toLowerCase().includes(musician));
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
-
-                // Vérifie que CHAQUE mot tapé est présent dans la ligne, peu importe l'ordre
                 const matchSearch = searchWords.every(word => rowString.includes(word));
 
                 return matchMusician && matchMonth && matchYear && matchSearch;
