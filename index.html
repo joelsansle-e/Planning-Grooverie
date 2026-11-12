@@ -33,90 +33,104 @@
                 <span id="themeLabel">Mode clair</span>
             </button>
             <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">v30</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">v31</p>
         </header>
 
-        <!-- Filtres -->
-        <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-xl p-4 md:p-6 mb-4 shadow-lg flex flex-wrap gap-4 items-center justify-between transition-colors">
-            <div class="flex flex-wrap gap-4 items-center w-full md:w-auto">
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Musicien</label>
-                    <select id="filterMusician" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                        <option value="Tous">Tous les musiciens</option>
-                        <option value="Nas">Nas</option>
-                        <option value="Shan">Shan</option>
-                        <option value="Mat">Mat</option>
-                        <option value="Flo">Flo</option>
-                        <option value="Tony">Tony</option>
-                        <option value="Jo">Jo</option>
-                        <option value="Célia">Célia</option>
-                        <option value="Lauralyn">Lauralyn</option>
-                        <option value="Rhodes">Rhodes</option>
-                        <option value="Félix">Félix</option>
-                        <option value="Obed">Obed</option>
-                        <option value="PL">PL</option>
-                    </select>
+        <!-- VUE PRINCIPALE : PLANNING -->
+        <div id="planningView">
+            <!-- Filtres -->
+            <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-xl p-4 md:p-6 mb-4 shadow-lg flex flex-wrap gap-4 items-center justify-between transition-colors">
+                <div class="flex flex-wrap gap-4 items-center w-full md:w-auto">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Musicien</label>
+                        <select id="filterMusician" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                            <option value="Tous">Tous les musiciens</option>
+                            <option value="Nas">Nas</option>
+                            <option value="Shan">Shan</option>
+                            <option value="Mat">Mat</option>
+                            <option value="Flo">Flo</option>
+                            <option value="Tony">Tony</option>
+                            <option value="Jo">Jo</option>
+                            <option value="Célia">Célia</option>
+                            <option value="Lauralyn">Lauralyn</option>
+                            <option value="Rhodes">Rhodes</option>
+                            <option value="Félix">Félix</option>
+                            <option value="Obed">Obed</option>
+                            <option value="PL">PL</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Mois</label>
+                        <select id="filterMonth" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                            <option value="Tous">Tous les mois</option>
+                            <option value="01">Janvier</option>
+                            <option value="02">Février</option>
+                            <option value="03">Mars</option>
+                            <option value="04">Avril</option>
+                            <option value="05">Mai</option>
+                            <option value="06">Juin</option>
+                            <option value="07">Juillet</option>
+                            <option value="08">Août</option>
+                            <option value="09">Septembre</option>
+                            <option value="10">Octobre</option>
+                            <option value="11">Novembre</option>
+                            <option value="12">Décembre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Année</label>
+                        <select id="filterYear" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                            <option value="Toutes">Toutes les années</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Mois</label>
-                    <select id="filterMonth" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                        <option value="Tous">Tous les mois</option>
-                        <option value="01">Janvier</option>
-                        <option value="02">Février</option>
-                        <option value="03">Mars</option>
-                        <option value="04">Avril</option>
-                        <option value="05">Mai</option>
-                        <option value="06">Juin</option>
-                        <option value="07">Juillet</option>
-                        <option value="08">Août</option>
-                        <option value="09">Septembre</option>
-                        <option value="10">Octobre</option>
-                        <option value="11">Novembre</option>
-                        <option value="12">Décembre</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Année</label>
-                    <select id="filterYear" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                        <option value="Toutes">Toutes les années</option>
-                    </select>
+                <div class="w-full md:w-auto flex-1 max-w-xs">
+                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Recherche</label>
+                    <input type="text" id="searchInput" placeholder="Filtrer par mot-clé..." class="w-full bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
                 </div>
             </div>
-            <div class="w-full md:w-auto flex-1 max-w-xs">
-                <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Recherche</label>
-                <input type="text" id="searchInput" placeholder="Filtrer par mot-clé..." class="w-full bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+
+            <!-- Compteur dynamique et réinitialisation globale des tris -->
+            <div class="mb-3 px-1 flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
+                <span id="sessionCounter">Chargement des sessions...</span>
+                <div id="resetSortContainer"></div>
+            </div>
+
+            <!-- Tableau des données avec hauteur max et scroll -->
+            <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-xl shadow-lg overflow-hidden transition-colors">
+                <div class="overflow-x-auto max-h-[75vh] overflow-y-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="sticky top-0 z-10">
+                            <tr class="bg-slate-200 dark:bg-slate-900 border-b border-slate-300 dark:border-borderCol text-slate-700 dark:text-slate-200 text-xs uppercase tracking-wider text-center shadow-md select-none">
+                                <th id="th-0" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(0)">Date ↕</th>
+                                <th id="th-1" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(1)">Cachet 1 ↕</th>
+                                <th id="th-2" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(2)">Cachet 2 ↕</th>
+                                <th id="th-3" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(3)">Chant ↕</th>
+                                <th id="th-4" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(4)">Drums ↕</th>
+                                <th id="th-5" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(5)">Basse ↕</th>
+                                <th id="th-6" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(6)">Clavier ↕</th>
+                                <th id="th-7" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(7)">Commentaires ↕</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-200 dark:divide-borderCol/60 text-sm text-center">
+                            <tr>
+                                <td colspan="8" class="p-8 text-slate-500 dark:text-slate-400 text-center">Chargement des données du planning...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- Compteur dynamique et bouton de réinitialisation globale des tris -->
-        <div class="mb-3 px-1 flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
-            <span id="sessionCounter">Chargement des sessions...</span>
-            <div id="resetSortContainer"></div>
-        </div>
-
-        <!-- Tableau des données avec hauteur max et scroll -->
-        <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-xl shadow-lg overflow-hidden transition-colors">
-            <div class="overflow-x-auto max-h-[75vh] overflow-y-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead class="sticky top-0 z-10">
-                        <tr class="bg-slate-200 dark:bg-slate-900 border-b border-slate-300 dark:border-borderCol text-slate-700 dark:text-slate-200 text-xs uppercase tracking-wider text-center shadow-md select-none">
-                            <th id="th-0" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(0)">Date ↕</th>
-                            <th id="th-1" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(1)">Cachet 1 ↕</th>
-                            <th id="th-2" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(2)">Cachet 2 ↕</th>
-                            <th id="th-3" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(3)">Chant ↕</th>
-                            <th id="th-4" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(4)">Drums ↕</th>
-                            <th id="th-5" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(5)">Basse ↕</th>
-                            <th id="th-6" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(6)">Clavier ↕</th>
-                            <th id="th-7" class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="toggleSort(7)">Commentaires ↕</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody" class="divide-y divide-slate-200 dark:divide-borderCol/60 text-sm text-center">
-                        <tr>
-                            <td colspan="8" class="p-8 text-slate-500 dark:text-slate-400 text-center">Chargement des données du planning...</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- VUE DÉTAILLÉE D'UNE SESSION -->
+        <div id="detailView" class="hidden">
+            <div class="mb-6 flex items-center justify-between">
+                <button onclick="closeSessionDetail()" class="px-4 py-2 rounded-lg bg-white dark:bg-cardBg border border-slate-300 dark:border-borderCol text-slate-700 dark:text-slate-200 hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors shadow-sm text-sm font-semibold flex items-center gap-2">
+                    <span>←</span>
+                    <span>Retour au planning</span>
+                </button>
             </div>
+            <div id="detailContent"></div>
         </div>
     </div>
 
@@ -158,8 +172,18 @@
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
 
-        function getMusicianBadge(cellValue) {
-            if (!cellValue || cellValue.trim() === "") return "";
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function getMusicianBadge(cellValue, large = false) {
+            if (!cellValue || cellValue.trim() === "") return `<span class="text-slate-400 italic text-xs">—</span>`;
             
             const mainNamePart = cellValue.split('(')[0].trim().toLowerCase();
             
@@ -172,7 +196,8 @@
             else if (mainNamePart.includes("tony")) bgClass = "bg-rose-700 text-rose-100";
             else if (mainNamePart.includes("jo")) bgClass = "bg-emerald-600 text-emerald-50 font-bold";
 
-            return `<span class="px-2.5 py-1 rounded-md text-xs inline-block shadow-sm ${bgClass}">${cellValue}</span>`;
+            const sizeClass = large ? "px-3.5 py-1.5 text-sm" : "px-2.5 py-1 text-xs";
+            return `<span class="${sizeClass} rounded-md inline-block shadow-sm ${bgClass}">${escapeHTML(cellValue)}</span>`;
         }
 
         async function loadSheetData() {
@@ -186,22 +211,44 @@
             }
         }
 
+        // Parseur CSV robuste supportant les sauts de ligne et guillemets doubles à l'intérieur des cellules (ex: Setlist)
         function parseCSV(text) {
-            const lines = text.split('\n').map(line => {
-                const row = [];
-                let inQuotes = false, current = '';
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    if (char === '"') inQuotes = !inQuotes;
-                    else if (char === ',' && !inQuotes) { row.push(current.trim()); current = ''; }
-                    else current += char;
-                }
-                row.push(current.trim());
-                return row;
-            });
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let inQuotes = false;
 
-            if (lines.length > 1) {
-                allData = lines.slice(1).filter(row => row.length >= 8 && row[0] !== "");
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        currentField += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    currentRow.push(currentField.trim());
+                    currentField = '';
+                } else if ((char === '\n' || (char === '\r' && nextChar === '\n')) && !inQuotes) {
+                    if (char === '\r') i++;
+                    currentRow.push(currentField.trim());
+                    rows.push(currentRow);
+                    currentRow = [];
+                    currentField = '';
+                } else {
+                    currentField += char;
+                }
+            }
+            if (currentField !== '' || currentRow.length > 0) {
+                currentRow.push(currentField.trim());
+                rows.push(currentRow);
+            }
+
+            if (rows.length > 1) {
+                allData = rows.slice(1).filter(row => row.length >= 8 && row[0] !== "");
                 populateYearFilter();
                 setDefaultCurrentMonth();
                 filterData();
@@ -334,7 +381,6 @@
                 }
             }
 
-            // Affiche le bouton de réinitialisation globale des tris juste au-dessus du tableau si des tris sont actifs
             const resetContainer = document.getElementById("resetSortContainer");
             if (activeSorts.length > 0) {
                 resetContainer.innerHTML = `
@@ -397,18 +443,117 @@
                 const badgeNext = isNext ? `<span class="mb-1 inline-block px-2 py-0.5 bg-indigo-600 dark:bg-indigo-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider animate-pulse">Prochaine session</span><br>` : "";
 
                 return `
-                    <tr class="${rowBgClass} ${monthBorderClass} hover:bg-slate-200/70 dark:hover:bg-slate-700/50 transition-colors">
-                        <td class="p-4 font-medium text-slate-900 dark:text-white">${badgeNext}${date}</td>
+                    <tr onclick="openSessionDetail(${index})" title="Cliquer pour voir la fiche de la jam" class="${rowBgClass} ${monthBorderClass} cursor-pointer hover:bg-slate-200/80 dark:hover:bg-slate-700/60 transition-colors">
+                        <td class="p-4 font-medium text-slate-900 dark:text-white">${badgeNext}${escapeHTML(date)}</td>
                         <td class="p-4">${getMusicianBadge(cachet1)}</td>
                         <td class="p-4">${getMusicianBadge(cachet2)}</td>
-                        <td class="p-4 text-slate-700 dark:text-slate-300">${chant}</td>
-                        <td class="p-4 text-slate-700 dark:text-slate-300">${drums}</td>
-                        <td class="p-4 text-slate-700 dark:text-slate-300">${basse}</td>
-                        <td class="p-4 text-slate-700 dark:text-slate-300">${clavier}</td>
-                        <td class="p-4 text-slate-500 dark:text-slate-400 italic">${commentaires}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${escapeHTML(chant)}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${escapeHTML(drums)}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${escapeHTML(basse)}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${escapeHTML(clavier)}</td>
+                        <td class="p-4 text-slate-500 dark:text-slate-400 italic">${escapeHTML(commentaires)}</td>
                     </tr>
                 `;
             }).join('');
+        }
+
+        function openSessionDetail(index) {
+            const row = currentFilteredData[index];
+            if (!row) return;
+
+            const nextSessionIdx = findNextSessionIndex(currentFilteredData);
+            const isNext = (index === nextSessionIdx);
+
+            const date = row[0] || "";
+            let cachet1 = row[1] || "";
+            let cachet2 = row[2] || "";
+            const net1 = row[8] || "";
+            const net2 = row[9] || "";
+            const chant = row[3] || "—";
+            const drums = row[4] || "—";
+            const basse = row[5] || "—";
+            const clavier = row[6] || "—";
+            const commentaires = row[7] ? row[7].trim() : "";
+            const setlist = row[10] ? row[10].trim() : "";
+
+            if (net1.trim() !== "") cachet1 += ` (${net1})`;
+            if (net2.trim() !== "") cachet2 += ` (${net2})`;
+
+            const badgeNext = isNext 
+                ? `<span class="inline-block px-3 py-1 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-3">Prochaine session</span>` 
+                : "";
+
+            const commentairesHtml = (commentaires && commentaires !== "/") ? `
+                <div class="bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 rounded-xl p-5 mb-6">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-2">Commentaires & Infos</h3>
+                    <p class="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-line">${escapeHTML(commentaires)}</p>
+                </div>
+            ` : "";
+
+            const setlistHtml = setlist ? `
+                <div class="bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-borderCol rounded-xl p-6">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-4">Setlist & Déroulé</h3>
+                    <div class="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line font-normal">${escapeHTML(setlist)}</div>
+                </div>
+            ` : `
+                <div class="bg-slate-50 dark:bg-darkBg/40 border border-dashed border-slate-300 dark:border-borderCol rounded-xl p-6 text-center">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Setlist</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 italic">Aucune setlist renseignée pour cette session.</p>
+                </div>
+            `;
+
+            document.getElementById("detailContent").innerHTML = `
+                <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-2xl p-6 md:p-8 shadow-xl transition-colors">
+                    <!-- En-tête de la fiche -->
+                    <div class="border-b border-slate-200 dark:border-borderCol pb-6 mb-6">
+                        ${badgeNext}
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white">${escapeHTML(date)}</h2>
+                    </div>
+
+                    <!-- Grille de l'équipe -->
+                    <div class="mb-6">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Équipe & Line-up</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70 flex flex-col justify-between">
+                                <span class="text-xs font-semibold uppercase text-slate-400 mb-2">Cachet 1</span>
+                                <div>${getMusicianBadge(cachet1, true)}</div>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70 flex flex-col justify-between">
+                                <span class="text-xs font-semibold uppercase text-slate-400 mb-2">Cachet 2</span>
+                                <div>${getMusicianBadge(cachet2, true)}</div>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
+                                <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Chant</span>
+                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(chant)}</span>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
+                                <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Drums</span>
+                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(drums)}</span>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
+                                <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Basse</span>
+                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(basse)}</span>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
+                                <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Clavier</span>
+                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(clavier)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${commentairesHtml}
+                    ${setlistHtml}
+                </div>
+            `;
+
+            document.getElementById("planningView").classList.add("hidden");
+            document.getElementById("detailView").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeSessionDetail() {
+            document.getElementById("detailView").classList.add("hidden");
+            document.getElementById("planningView").classList.remove("hidden");
         }
 
         function toggleSort(colIndex) {
@@ -473,7 +618,8 @@
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
                 
-                const matchSearch = searchWords.length === 0 || row.slice(0, 10).some(cell => {
+                // Inclut désormais la colonne 10 (Setlist) dans la recherche intra-cellule
+                const matchSearch = searchWords.length === 0 || row.slice(0, 11).some(cell => {
                     const cleanCell = removeAccents(cell);
                     return searchWords.every(word => cleanCell.includes(word));
                 });
