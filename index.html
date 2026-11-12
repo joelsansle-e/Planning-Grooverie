@@ -29,7 +29,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-400 text-sm">v21</p>
+            <p class="text-slate-400 text-sm">v22</p>
         </header>
 
         <!-- Filtres -->
@@ -89,15 +89,15 @@
             <div class="overflow-x-auto max-h-[75vh] overflow-y-auto">
                 <table class="w-full text-left border-collapse">
                     <thead class="sticky top-0 z-10">
-                        <tr class="bg-slate-900 border-b border-borderCol text-slate-200 text-xs uppercase tracking-wider text-center shadow-md">
-                            <th class="p-4 font-semibold bg-slate-900">Date</th>
-                            <th class="p-4 font-semibold bg-slate-900">Cachet 1</th>
-                            <th class="p-4 font-semibold bg-slate-900">Cachet 2</th>
-                            <th class="p-4 font-semibold bg-slate-900">Chant</th>
-                            <th class="p-4 font-semibold bg-slate-900">Drums</th>
-                            <th class="p-4 font-semibold bg-slate-900">Basse</th>
-                            <th class="p-4 font-semibold bg-slate-900">Clavier</th>
-                            <th class="p-4 font-semibold bg-slate-900">Commentaires</th>
+                        <tr class="bg-slate-900 border-b border-borderCol text-slate-200 text-xs uppercase tracking-wider text-center shadow-md select-none">
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(0)">Date ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(1)">Cachet 1 ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(2)">Cachet 2 ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(3)">Chant ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(4)">Drums ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(5)">Basse ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(6)">Clavier ↕</th>
+                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(7)">Commentaires ↕</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-borderCol/60 text-sm text-center">
@@ -114,6 +114,9 @@
         const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1EgkCv-Qn9tqAoZNuWedt0P-i3yUZHi_U2iVEV0QIr14/gviz/tq?tqx=out:csv&sheet=Planning_Master";
 
         let allData = [];
+        let currentFilteredData = [];
+        let sortColIndex = null;
+        let sortAsc = true;
 
         function removeAccents(str) {
             if (!str) return "";
@@ -233,6 +236,39 @@
             return { month, year };
         }
 
+        // Convertit une chaîne de date en objet Date JS pour le tri et la comparaison
+        function parseRealDate(dateStr) {
+            if (!dateStr) return new Date(0);
+            const parts = dateStr.split(/[\/\-\.]/);
+            if (parts.length >= 3) {
+                if (parts[0].length === 4) { // AAAA-MM-JJ
+                    return new Date(parts[0], parts[1] - 1, parts[2]);
+                } else { // JJ/MM/AAAA
+                    return new Date(parts[2], parts[1] - 1, parts[0]);
+                }
+            }
+            return new Date(0);
+        }
+
+        // Trouve l'index de la session la plus proche d'aujourd'hui (future ou aujourd'hui)
+        function findNextSessionIndex(data) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let closestIndex = -1;
+            let minDiff = Infinity;
+
+            data.forEach((row, index) => {
+                const sessionDate = parseRealDate(row[0]);
+                const diff = sessionDate - today;
+                if (diff >= 0 && diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = index;
+                }
+            });
+            return closestIndex;
+        }
+
         function renderTable(data) {
             const tbody = document.getElementById("tableBody");
             if (data.length === 0) {
@@ -240,6 +276,7 @@
                 return;
             }
 
+            const nextSessionIdx = findNextSessionIndex(data);
             let previousMonth = null;
 
             tbody.innerHTML = data.map((row, index) => {
@@ -247,11 +284,15 @@
                 const dateInfo = parseDateInfo(date);
                 const monthNum = parseInt(dateInfo.month, 10);
                 
-                // Alterne la couleur de fond selon le mois (pair vs impair)
                 const isEvenMonth = !isNaN(monthNum) && monthNum % 2 === 0;
-                const rowBgClass = isEvenMonth ? "bg-indigo-950/35" : "bg-slate-800/40";
+                let rowBgClass = isEvenMonth ? "bg-indigo-950/35" : "bg-slate-800/40";
                 
-                // Ajoute une bordure supérieure plus marquée quand on change de mois
+                // Si c'est la prochaine session à venir, on met en avant avec un fond lumineux et une bordure spécifique
+                const isNext = (index === nextSessionIdx);
+                if (isNext) {
+                    rowBgClass = "bg-indigo-600/30 border-l-4 border-indigo-400";
+                }
+
                 const isNewMonth = previousMonth !== null && dateInfo.month !== previousMonth;
                 const monthBorderClass = isNewMonth ? "border-t-2 border-indigo-500/40" : "";
                 previousMonth = dateInfo.month;
@@ -270,9 +311,11 @@
                 if (net1.trim() !== "") cachet1 += ` (${net1})`;
                 if (net2.trim() !== "") cachet2 += ` (${net2})`;
 
+                const badgeNext = isNext ? `<span class="ml-2 px-2 py-0.5 bg-indigo-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider animate-pulse">Prochaine session</span>` : "";
+
                 return `
                     <tr class="${rowBgClass} ${monthBorderClass} hover:bg-slate-700/50 transition-colors">
-                        <td class="p-4 font-medium text-white">${date}</td>
+                        <td class="p-4 font-medium text-white">${date}${badgeNext}</td>
                         <td class="p-4">${getMusicianBadge(cachet1)}</td>
                         <td class="p-4">${getMusicianBadge(cachet2)}</td>
                         <td class="p-4 text-slate-300">${chant}</td>
@@ -285,6 +328,34 @@
             }).join('');
         }
 
+        function sortData(colIndex) {
+            if (sortColIndex === colIndex) {
+                sortAsc = !sortAsc;
+            } else {
+                sortColIndex = colIndex;
+                sortAsc = true;
+            }
+
+            currentFilteredData.sort((a, b) => {
+                let valA = a[colIndex] || "";
+                let valB = b[colIndex] || "";
+
+                if (colIndex === 0) {
+                    valA = parseRealDate(valA);
+                    valB = parseRealDate(valB);
+                } else {
+                    valA = valA.toLowerCase();
+                    valB = valB.toLowerCase();
+                }
+
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            renderTable(currentFilteredData);
+        }
+
         function filterData() {
             const musician = document.getElementById("filterMusician").value.toLowerCase();
             const selectedMonth = document.getElementById("filterMonth").value;
@@ -293,7 +364,7 @@
             
             const searchWords = rawSearch ? removeAccents(rawSearch).split(/\s+/) : [];
 
-            const filtered = allData.filter(row => {
+            currentFilteredData = allData.filter(row => {
                 const rowString = removeAccents(row.join(" "));
                 const dateVal = row[0];
                 const dateInfo = parseDateInfo(dateVal);
@@ -306,7 +377,13 @@
                 return matchMusician && matchMonth && matchYear && matchSearch;
             });
 
-            renderTable(filtered);
+            // Réinitialise le tri lors d'un changement de filtre, ou le réapplique
+            if (sortColIndex !== null) {
+                sortData(sortColIndex);
+                sortAsc = !sortAsc; // Inverse pour compenser le toggle
+            } else {
+                renderTable(currentFilteredData);
+            }
         }
 
         document.getElementById("filterMusician").addEventListener("change", filterData);
