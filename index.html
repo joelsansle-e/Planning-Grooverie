@@ -33,7 +33,7 @@
                 <span id="themeLabel">Mode clair</span>
             </button>
             <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">v24</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">v25</p>
         </header>
 
         <!-- Filtres -->
@@ -84,7 +84,7 @@
             </div>
             <div class="w-full md:w-auto flex-1 max-w-xs">
                 <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Recherche</label>
-                <input type="text" id="searchInput" placeholder="Ex: Shan absent..." class="w-full bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                <input type="text" id="searchInput" placeholder="Filtrer par mot-clé..." class="w-full bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
             </div>
         </div>
 
@@ -127,7 +127,6 @@
         let sortColIndex = null;
         let sortAsc = true;
 
-        // Gestion du thème clair / sombre
         function initTheme() {
             const savedTheme = localStorage.getItem('ogjam-theme');
             const htmlEl = document.documentElement;
@@ -418,7 +417,6 @@
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
                 
-                // Tous les mots recherchés doivent être présents au sein d'une même cellule (colonnes 0 à 9)
                 const matchSearch = searchWords.length === 0 || row.slice(0, 10).some(cell => {
                     const cleanCell = removeAccents(cell);
                     return searchWords.every(word => cleanCell.includes(word));
