@@ -29,7 +29,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-400 text-sm">v20</p>
+            <p class="text-slate-400 text-sm">v21</p>
         </header>
 
         <!-- Filtres -->
@@ -100,7 +100,7 @@
                             <th class="p-4 font-semibold bg-slate-900">Commentaires</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-borderCol text-sm text-center">
+                    <tbody id="tableBody" class="divide-y divide-borderCol/60 text-sm text-center">
                         <tr>
                             <td colspan="8" class="p-8 text-slate-400 text-center">Chargement des données du planning...</td>
                         </tr>
@@ -240,8 +240,22 @@
                 return;
             }
 
-            tbody.innerHTML = data.map(row => {
+            let previousMonth = null;
+
+            tbody.innerHTML = data.map((row, index) => {
                 const date = row[0] || "";
+                const dateInfo = parseDateInfo(date);
+                const monthNum = parseInt(dateInfo.month, 10);
+                
+                // Alterne la couleur de fond selon le mois (pair vs impair)
+                const isEvenMonth = !isNaN(monthNum) && monthNum % 2 === 0;
+                const rowBgClass = isEvenMonth ? "bg-indigo-950/35" : "bg-slate-800/40";
+                
+                // Ajoute une bordure supérieure plus marquée quand on change de mois
+                const isNewMonth = previousMonth !== null && dateInfo.month !== previousMonth;
+                const monthBorderClass = isNewMonth ? "border-t-2 border-indigo-500/40" : "";
+                previousMonth = dateInfo.month;
+
                 let cachet1 = row[1] || "";
                 let cachet2 = row[2] || "";
                 const net1 = row[8] || ""; 
@@ -257,7 +271,7 @@
                 if (net2.trim() !== "") cachet2 += ` (${net2})`;
 
                 return `
-                    <tr class="hover:bg-slate-800/50 transition-colors">
+                    <tr class="${rowBgClass} ${monthBorderClass} hover:bg-slate-700/50 transition-colors">
                         <td class="p-4 font-medium text-white">${date}</td>
                         <td class="p-4">${getMusicianBadge(cachet1)}</td>
                         <td class="p-4">${getMusicianBadge(cachet2)}</td>
