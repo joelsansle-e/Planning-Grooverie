@@ -25,7 +25,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
-            <p class="text-slate-400 text-sm">v16</p>
+            <p class="text-slate-400 text-sm">v17</p>
         </header>
 
         <!-- Filtres -->
@@ -110,6 +110,11 @@
         const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1EgkCv-Qn9tqAoZNuWedt0P-i3yUZHi_U2iVEV0QIr14/gviz/tq?tqx=out:csv&sheet=Planning_Master";
 
         let allData = [];
+
+        function removeAccents(str) {
+            if (!str) return "";
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
 
         function getMusicianBadge(cellValue) {
             if (!cellValue || cellValue.trim() === "") return "";
@@ -259,15 +264,17 @@
             const musician = document.getElementById("filterMusician").value.toLowerCase();
             const selectedMonth = document.getElementById("filterMonth").value;
             const selectedYear = document.getElementById("filterYear").value;
-            const rawSearch = document.getElementById("searchInput").value.toLowerCase().trim();
-            const searchWords = rawSearch ? rawSearch.split(/\s+/) : [];
+            const rawSearch = document.getElementById("searchInput").value.trim();
+            
+            // Nettoie les accents et la casse de la recherche et de chaque ligne
+            const searchWords = rawSearch ? removeAccents(rawSearch).split(/\s+/) : [];
 
             const filtered = allData.filter(row => {
-                const rowString = row.join(" ").toLowerCase();
+                const rowString = removeAccents(row.join(" "));
                 const dateVal = row[0];
                 const dateInfo = parseDateInfo(dateVal);
 
-                const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => cell.toLowerCase().includes(musician));
+                const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => removeAccents(cell).includes(removeAccents(musician)));
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
                 const matchSearch = searchWords.every(word => rowString.includes(word));
