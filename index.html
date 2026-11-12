@@ -24,20 +24,24 @@
         }
     </script>
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen p-4 md:p-8 font-sans">
+<body class="bg-slate-100 text-slate-900 dark:bg-darkBg dark:text-slate-100 min-h-screen p-4 md:p-8 font-sans transition-colors duration-200">
     <div class="max-w-6xl mx-auto">
-        <!-- En-tête -->
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-400 text-sm">v23</p>
+        <!-- En-tête avec bouton thème -->
+        <header class="mb-8 relative flex flex-col items-center justify-center">
+            <button id="themeToggle" onclick="toggleTheme()" title="Changer de thème" class="self-end md:absolute md:right-0 md:top-1 mb-3 md:mb-0 p-2 rounded-lg bg-white dark:bg-cardBg border border-slate-300 dark:border-borderCol text-slate-700 dark:text-slate-200 hover:border-indigo-500 transition-colors shadow-sm text-xs font-semibold flex items-center gap-1.5">
+                <span id="themeIcon">☀️</span>
+                <span id="themeLabel">Mode clair</span>
+            </button>
+            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Planning OG Jam</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">v24</p>
         </header>
 
         <!-- Filtres -->
-        <div class="bg-cardBg border border-borderCol rounded-xl p-4 md:p-6 mb-4 shadow-lg flex flex-wrap gap-4 items-center justify-between">
+        <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-xl p-4 md:p-6 mb-4 shadow-lg flex flex-wrap gap-4 items-center justify-between transition-colors">
             <div class="flex flex-wrap gap-4 items-center w-full md:w-auto">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Musicien</label>
-                    <select id="filterMusician" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Musicien</label>
+                    <select id="filterMusician" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
                         <option value="Tous">Tous les musiciens</option>
                         <option value="Nas">Nas</option>
                         <option value="Shan">Shan</option>
@@ -54,8 +58,8 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Mois</label>
-                    <select id="filterMonth" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Mois</label>
+                    <select id="filterMonth" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
                         <option value="Tous">Tous les mois</option>
                         <option value="01">Janvier</option>
                         <option value="02">Février</option>
@@ -72,42 +76,42 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Année</label>
-                    <select id="filterYear" class="bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Année</label>
+                    <select id="filterYear" class="bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
                         <option value="Toutes">Toutes les années</option>
                     </select>
                 </div>
             </div>
             <div class="w-full md:w-auto flex-1 max-w-xs">
-                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Recherche</label>
-                <input type="text" id="searchInput" placeholder="Filtrer par mot-clé..." class="w-full bg-darkBg border border-borderCol text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Recherche</label>
+                <input type="text" id="searchInput" placeholder="Ex: Shan absent..." class="w-full bg-slate-50 dark:bg-darkBg border border-slate-300 dark:border-borderCol text-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
             </div>
         </div>
 
         <!-- Compteur dynamique -->
-        <div class="mb-3 px-1 flex justify-between items-center text-xs text-slate-400">
+        <div class="mb-3 px-1 flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
             <span id="sessionCounter">Chargement des sessions...</span>
         </div>
 
         <!-- Tableau des données avec hauteur max et scroll -->
-        <div class="bg-cardBg border border-borderCol rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-xl shadow-lg overflow-hidden transition-colors">
             <div class="overflow-x-auto max-h-[75vh] overflow-y-auto">
                 <table class="w-full text-left border-collapse">
                     <thead class="sticky top-0 z-10">
-                        <tr class="bg-slate-900 border-b border-borderCol text-slate-200 text-xs uppercase tracking-wider text-center shadow-md select-none">
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(0)">Date ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(1)">Cachet 1 ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(2)">Cachet 2 ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(3)">Chant ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(4)">Drums ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(5)">Basse ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(6)">Clavier ↕</th>
-                            <th class="p-4 font-semibold bg-slate-900 cursor-pointer hover:text-indigo-400 transition-colors" onclick="sortData(7)">Commentaires ↕</th>
+                        <tr class="bg-slate-200 dark:bg-slate-900 border-b border-slate-300 dark:border-borderCol text-slate-700 dark:text-slate-200 text-xs uppercase tracking-wider text-center shadow-md select-none">
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(0)">Date ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(1)">Cachet 1 ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(2)">Cachet 2 ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(3)">Chant ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(4)">Drums ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(5)">Basse ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(6)">Clavier ↕</th>
+                            <th class="p-4 font-semibold bg-slate-200 dark:bg-slate-900 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" onclick="sortData(7)">Commentaires ↕</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-borderCol/60 text-sm text-center">
+                    <tbody id="tableBody" class="divide-y divide-slate-200 dark:divide-borderCol/60 text-sm text-center">
                         <tr>
-                            <td colspan="8" class="p-8 text-slate-400 text-center">Chargement des données du planning...</td>
+                            <td colspan="8" class="p-8 text-slate-500 dark:text-slate-400 text-center">Chargement des données du planning...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -122,6 +126,31 @@
         let currentFilteredData = [];
         let sortColIndex = null;
         let sortAsc = true;
+
+        // Gestion du thème clair / sombre
+        function initTheme() {
+            const savedTheme = localStorage.getItem('ogjam-theme');
+            const htmlEl = document.documentElement;
+            if (savedTheme === 'light') {
+                htmlEl.classList.remove('dark');
+                updateThemeButton(false);
+            } else {
+                htmlEl.classList.add('dark');
+                updateThemeButton(true);
+            }
+        }
+
+        function toggleTheme() {
+            const htmlEl = document.documentElement;
+            const isDark = htmlEl.classList.toggle('dark');
+            localStorage.setItem('ogjam-theme', isDark ? 'dark' : 'light');
+            updateThemeButton(isDark);
+        }
+
+        function updateThemeButton(isDark) {
+            document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+            document.getElementById('themeLabel').textContent = isDark ? 'Mode clair' : 'Mode sombre';
+        }
 
         function removeAccents(str) {
             if (!str) return "";
@@ -142,7 +171,7 @@
             else if (mainNamePart.includes("tony")) bgClass = "bg-rose-700 text-rose-100";
             else if (mainNamePart.includes("jo")) bgClass = "bg-emerald-600 text-emerald-50 font-bold";
 
-            return `<span class="px-2.5 py-1 rounded-md text-xs inline-block ${bgClass}">${cellValue}</span>`;
+            return `<span class="px-2.5 py-1 rounded-md text-xs inline-block shadow-sm ${bgClass}">${cellValue}</span>`;
         }
 
         async function loadSheetData() {
@@ -152,7 +181,7 @@
                 parseCSV(csvText);
             } catch (error) {
                 console.error("Erreur de chargement:", error);
-                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-rose-400 text-center">Erreur lors du chargement des données du Google Sheet. Vérifiez le partage public.</td></tr>`;
+                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-rose-500 dark:text-rose-400 text-center">Erreur lors du chargement des données du Google Sheet. Vérifiez le partage public.</td></tr>`;
             }
         }
 
@@ -176,7 +205,7 @@
                 setDefaultCurrentMonth();
                 filterData();
             } else {
-                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400 text-center">Aucune donnée trouvée dans le tableau.</td></tr>`;
+                document.getElementById("tableBody").innerHTML = `<tr><td colspan="8" class="p-8 text-slate-500 dark:text-slate-400 text-center">Aucune donnée trouvée dans le tableau.</td></tr>`;
             }
         }
 
@@ -288,7 +317,7 @@
             updateCounter(data.length);
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400 text-center">Aucune session correspondante.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-slate-500 dark:text-slate-400 text-center">Aucune session correspondante.</td></tr>`;
                 return;
             }
 
@@ -301,15 +330,17 @@
                 const monthNum = parseInt(dateInfo.month, 10);
                 
                 const isEvenMonth = !isNaN(monthNum) && monthNum % 2 === 0;
-                let rowBgClass = isEvenMonth ? "bg-indigo-950/35" : "bg-slate-800/40";
+                let rowBgClass = isEvenMonth 
+                    ? "bg-indigo-50/80 dark:bg-indigo-950/35" 
+                    : "bg-white dark:bg-slate-800/40";
                 
                 const isNext = (index === nextSessionIdx);
                 if (isNext) {
-                    rowBgClass = "bg-indigo-600/30 border-l-4 border-indigo-400";
+                    rowBgClass = "bg-indigo-100 dark:bg-indigo-600/30 border-l-4 border-indigo-500 dark:border-indigo-400";
                 }
 
                 const isNewMonth = previousMonth !== null && dateInfo.month !== previousMonth;
-                const monthBorderClass = isNewMonth ? "border-t-2 border-indigo-500/40" : "";
+                const monthBorderClass = isNewMonth ? "border-t-2 border-indigo-300 dark:border-indigo-500/40" : "";
                 previousMonth = dateInfo.month;
 
                 let cachet1 = row[1] || "";
@@ -326,18 +357,18 @@
                 if (net1.trim() !== "") cachet1 += ` (${net1})`;
                 if (net2.trim() !== "") cachet2 += ` (${net2})`;
 
-                const badgeNext = isNext ? `<span class="mb-1 inline-block px-2 py-0.5 bg-indigo-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider animate-pulse">Prochaine session</span><br>` : "";
+                const badgeNext = isNext ? `<span class="mb-1 inline-block px-2 py-0.5 bg-indigo-600 dark:bg-indigo-500 text-white text-[10px] font-bold rounded-full uppercase tracking-wider animate-pulse">Prochaine session</span><br>` : "";
 
                 return `
-                    <tr class="${rowBgClass} ${monthBorderClass} hover:bg-slate-700/50 transition-colors">
-                        <td class="p-4 font-medium text-white">${badgeNext}${date}</td>
+                    <tr class="${rowBgClass} ${monthBorderClass} hover:bg-slate-200/70 dark:hover:bg-slate-700/50 transition-colors">
+                        <td class="p-4 font-medium text-slate-900 dark:text-white">${badgeNext}${date}</td>
                         <td class="p-4">${getMusicianBadge(cachet1)}</td>
                         <td class="p-4">${getMusicianBadge(cachet2)}</td>
-                        <td class="p-4 text-slate-300">${chant}</td>
-                        <td class="p-4 text-slate-300">${drums}</td>
-                        <td class="p-4 text-slate-300">${basse}</td>
-                        <td class="p-4 text-slate-300">${clavier}</td>
-                        <td class="p-4 text-slate-400 italic">${commentaires}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${chant}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${drums}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${basse}</td>
+                        <td class="p-4 text-slate-700 dark:text-slate-300">${clavier}</td>
+                        <td class="p-4 text-slate-500 dark:text-slate-400 italic">${commentaires}</td>
                     </tr>
                 `;
             }).join('');
@@ -380,14 +411,18 @@
             const searchWords = rawSearch ? removeAccents(rawSearch).split(/\s+/) : [];
 
             currentFilteredData = allData.filter(row => {
-                const rowString = removeAccents(row.join(" "));
                 const dateVal = row[0];
                 const dateInfo = parseDateInfo(dateVal);
 
                 const matchMusician = musician === "tous" || row.slice(1, 7).some(cell => removeAccents(cell).includes(removeAccents(musician)));
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
-                const matchSearch = searchWords.every(word => rowString.includes(word));
+                
+                // Tous les mots recherchés doivent être présents au sein d'une même cellule (colonnes 0 à 9)
+                const matchSearch = searchWords.length === 0 || row.slice(0, 10).some(cell => {
+                    const cleanCell = removeAccents(cell);
+                    return searchWords.every(word => cleanCell.includes(word));
+                });
 
                 return matchMusician && matchMonth && matchYear && matchSearch;
             });
@@ -405,6 +440,7 @@
         document.getElementById("filterYear").addEventListener("change", filterData);
         document.getElementById("searchInput").addEventListener("input", filterData);
 
+        initTheme();
         loadSheetData();
     </script>
 </body>
