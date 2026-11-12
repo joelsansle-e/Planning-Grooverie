@@ -450,7 +450,8 @@
                 return;
             }
 
-            const nextSessionIdx = findNextSessionIndex(data);
+            const nextSessionGlobalIdx = findNextSessionIndex(allData);
+            const nextSessionRow = allData[nextSessionGlobalIdx];
             let previousMonth = null;
 
             tbody.innerHTML = data.map((row, index) => {
@@ -463,7 +464,8 @@
                     ? "bg-indigo-50/80 dark:bg-indigo-950/35" 
                     : "bg-white dark:bg-slate-800/40";
                 
-                const isNext = (index === nextSessionIdx);
+                // Vérifie si la ligne affichée correspond exactement à la vraie prochaine session globale
+                const isNext = realNextSession && (row[0] === realNextSession[0] && row[1] === realNextSession[1]);
                 if (isNext) {
                     rowBgClass = "bg-indigo-100 dark:bg-indigo-600/30 border-l-4 border-indigo-500 dark:border-indigo-400";
                 }
