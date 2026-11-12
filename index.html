@@ -33,7 +33,7 @@
                 <span id="themeLabel">Mode clair</span>
             </button>
             <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">v31</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">v32</p>
         </header>
 
         <!-- VUE PRINCIPALE : PLANNING -->
@@ -182,6 +182,16 @@
                 .replace(/'/g, "&#039;");
         }
 
+        function formatPrettyDate(dateStr) {
+            const realDate = parseRealDate(dateStr);
+            if (isNaN(realDate.getTime()) || realDate.getTime() === new Date(0).getTime()) {
+                return escapeHTML(dateStr);
+            }
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            let formatted = realDate.toLocaleDateString('fr-FR', options);
+            return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        }
+
         function getMusicianBadge(cellValue, large = false) {
             if (!cellValue || cellValue.trim() === "") return `<span class="text-slate-400 italic text-xs">—</span>`;
             
@@ -196,7 +206,7 @@
             else if (mainNamePart.includes("tony")) bgClass = "bg-rose-700 text-rose-100";
             else if (mainNamePart.includes("jo")) bgClass = "bg-emerald-600 text-emerald-50 font-bold";
 
-            const sizeClass = large ? "px-3.5 py-1.5 text-sm" : "px-2.5 py-1 text-xs";
+            const sizeClass = large ? "px-4 py-2 text-sm md:text-base font-semibold" : "px-2.5 py-1 text-xs";
             return `<span class="${sizeClass} rounded-md inline-block shadow-sm ${bgClass}">${escapeHTML(cellValue)}</span>`;
         }
 
@@ -211,7 +221,6 @@
             }
         }
 
-        // Parseur CSV robuste supportant les sauts de ligne et guillemets doubles à l'intérieur des cellules (ex: Setlist)
         function parseCSV(text) {
             const rows = [];
             let currentRow = [];
@@ -464,7 +473,9 @@
             const nextSessionIdx = findNextSessionIndex(currentFilteredData);
             const isNext = (index === nextSessionIdx);
 
-            const date = row[0] || "";
+            const rawDate = row[0] || "";
+            const prettyDate = formatPrettyDate(rawDate);
+            
             let cachet1 = row[1] || "";
             let cachet2 = row[2] || "";
             const net1 = row[8] || "";
@@ -480,40 +491,42 @@
             if (net2.trim() !== "") cachet2 += ` (${net2})`;
 
             const badgeNext = isNext 
-                ? `<span class="inline-block px-3 py-1 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-3">Prochaine session</span>` 
+                ? `<span class="inline-block px-3 py-1 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">Prochaine session</span><br>` 
                 : "";
 
             const commentairesHtml = (commentaires && commentaires !== "/") ? `
-                <div class="bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 rounded-xl p-5 mb-6">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-2">Commentaires & Infos</h3>
-                    <p class="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-line">${escapeHTML(commentaires)}</p>
+                <div class="bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 rounded-xl p-6 mb-8">
+                    <h3 class="text-sm md:text-base font-extrabold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-3">Commentaires & Infos</h3>
+                    <p class="text-base text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed">${escapeHTML(commentaires)}</p>
                 </div>
             ` : "";
 
             const setlistHtml = setlist ? `
-                <div class="bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-borderCol rounded-xl p-6">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-4">Setlist & Déroulé</h3>
-                    <div class="text-sm md:text-base text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line font-normal">${escapeHTML(setlist)}</div>
+                <div class="bg-slate-50 dark:bg-darkBg/60 border border-slate-200 dark:border-borderCol rounded-xl p-6 md:p-8">
+                    <h3 class="text-sm md:text-base font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-4">Setlist & Déroulé</h3>
+                    <div class="text-base md:text-lg text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line font-normal">${escapeHTML(setlist)}</div>
                 </div>
             ` : `
-                <div class="bg-slate-50 dark:bg-darkBg/40 border border-dashed border-slate-300 dark:border-borderCol rounded-xl p-6 text-center">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Setlist</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 italic">Aucune setlist renseignée pour cette session.</p>
+                <div class="bg-slate-50 dark:bg-darkBg/40 border border-dashed border-slate-300 dark:border-borderCol rounded-xl p-8 text-center">
+                    <h3 class="text-sm md:text-base font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Setlist & Déroulé</h3>
+                    <p class="text-base text-slate-500 dark:text-slate-400 italic">Aucune setlist renseignée pour cette session.</p>
                 </div>
             `;
 
             document.getElementById("detailContent").innerHTML = `
-                <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-2xl p-6 md:p-8 shadow-xl transition-colors">
-                    <!-- En-tête de la fiche -->
-                    <div class="border-b border-slate-200 dark:border-borderCol pb-6 mb-6">
+                <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-2xl p-6 md:p-10 shadow-xl transition-colors">
+                    <!-- En-tête de la fiche centré -->
+                    <div class="border-b border-slate-200 dark:border-borderCol pb-6 mb-8 text-center">
                         ${badgeNext}
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white">${escapeHTML(date)}</h2>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white capitalize">${prettyDate}</h2>
                     </div>
 
-                    <!-- Grille de l'équipe -->
-                    <div class="mb-6">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Équipe & Line-up</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Grille de l'équipe (2 étages : Cachets en haut, Reste en dessous) -->
+                    <div class="mb-8">
+                        <h3 class="text-sm md:text-base font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Équipe & Line-up</h3>
+                        
+                        <!-- 1er étage : Cachet 1 & Cachet 2 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70 flex flex-col justify-between">
                                 <span class="text-xs font-semibold uppercase text-slate-400 mb-2">Cachet 1</span>
                                 <div>${getMusicianBadge(cachet1, true)}</div>
@@ -522,21 +535,25 @@
                                 <span class="text-xs font-semibold uppercase text-slate-400 mb-2">Cachet 2</span>
                                 <div>${getMusicianBadge(cachet2, true)}</div>
                             </div>
+                        </div>
+
+                        <!-- 2ème étage : Chant, Drums, Basse, Clavier -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Chant</span>
-                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(chant)}</span>
+                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(chant)}</span>
                             </div>
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Drums</span>
-                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(drums)}</span>
+                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(drums)}</span>
                             </div>
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Basse</span>
-                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(basse)}</span>
+                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(basse)}</span>
                             </div>
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Clavier</span>
-                                <span class="text-base font-semibold text-slate-900 dark:text-white">${escapeHTML(clavier)}</span>
+                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(clavier)}</span>
                             </div>
                         </div>
                     </div>
@@ -618,7 +635,6 @@
                 const matchMonth = selectedMonth === "Tous" || dateInfo.month === selectedMonth;
                 const matchYear = selectedYear === "Toutes" || dateInfo.year === selectedYear;
                 
-                // Inclut désormais la colonne 10 (Setlist) dans la recherche intra-cellule
                 const matchSearch = searchWords.length === 0 || row.slice(0, 11).some(cell => {
                     const cleanCell = removeAccents(cell);
                     return searchWords.every(word => cleanCell.includes(word));
