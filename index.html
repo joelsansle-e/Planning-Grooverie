@@ -33,7 +33,7 @@
                 <span id="themeLabel">Mode clair</span>
             </button>
             <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Planning OG Jam</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">v33</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">v34</p>
         </header>
 
         <!-- VUE PRINCIPALE : PLANNING -->
@@ -182,6 +182,19 @@
                 .replace(/'/g, "&#039;");
         }
 
+        // Convertit les balises Markdown basiques en HTML stylé
+        function parseFormatting(str) {
+            if (!str) return "";
+            let safe = escapeHTML(str);
+            // Gras **texte**
+            safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 dark:text-white">$1</strong>');
+            // Italique *texte*
+            safe = safe.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>');
+            // Souligné __texte__
+            safe = safe.replace(/__(.*?)__/g, '<u class="underline decoration-indigo-400">$1</u>');
+            return safe;
+        }
+
         function formatPrettyDate(dateStr) {
             const realDate = parseRealDate(dateStr);
             if (isNaN(realDate.getTime()) || realDate.getTime() === new Date(0).getTime()) {
@@ -192,7 +205,7 @@
             return formatted.charAt(0).toUpperCase() + formatted.slice(1);
         }
 
-        // Formate la setlist avec tabulation automatique sur les puces et alignement propre
+        // Formate la setlist avec puces, tabulations et interprétation du formatage
         function formatSetlistHTML(rawText) {
             if (!rawText) return "";
             return rawText.split(/\r?\n/).map(line => {
@@ -205,15 +218,14 @@
                     return `
                         <div class="pl-6 flex items-start gap-2.5 my-1.5">
                             <span class="text-indigo-500 dark:text-indigo-400 font-bold select-none">•</span>
-                            <span>${escapeHTML(content)}</span>
+                            <span>${parseFormatting(content)}</span>
                         </div>
                     `;
                 }
-                // Titre de section court (ex: "Ouverture", "Clôture") vs paragraphe de note
                 if (trimmed.length <= 35 && !trimmed.includes('.')) {
-                    return `<div class="font-bold text-slate-900 dark:text-white mt-2 mb-1">${escapeHTML(trimmed)}</div>`;
+                    return `<div class="font-bold text-slate-900 dark:text-white mt-3 mb-1 text-base md:text-lg">${parseFormatting(trimmed)}</div>`;
                 }
-                return `<div class="my-1.5 text-slate-700 dark:text-slate-300">${escapeHTML(trimmed)}</div>`;
+                return `<div class="my-1.5 text-slate-700 dark:text-slate-300">${parseFormatting(trimmed)}</div>`;
             }).join('');
         }
 
@@ -522,7 +534,7 @@
             const commentairesHtml = (commentaires && commentaires !== "/") ? `
                 <div class="bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 rounded-xl p-6 mb-8">
                     <h3 class="text-sm md:text-base font-extrabold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-3">Commentaires & Infos</h3>
-                    <p class="text-base text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed">${escapeHTML(commentaires)}</p>
+                    <p class="text-base text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed">${parseFormatting(commentaires)}</p>
                 </div>
             ` : "";
 
