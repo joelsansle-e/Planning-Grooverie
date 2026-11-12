@@ -25,7 +25,7 @@
         <!-- En-tête -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
-            <p class="text-slate-400 text-sm">v13</p>
+            <p class="text-slate-400 text-sm">v16</p>
         </header>
 
         <!-- Filtres -->
@@ -80,20 +80,20 @@
             </div>
         </div>
 
-        <!-- Tableau des données -->
+        <!-- Tableau des données avec hauteur max et scroll -->
         <div class="bg-cardBg border border-borderCol rounded-xl shadow-lg overflow-hidden">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto max-h-[75vh] overflow-y-auto">
                 <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-800/80 border-b border-borderCol text-slate-300 text-xs uppercase tracking-wider text-center">
-                            <th class="p-4 font-semibold">Date</th>
-                            <th class="p-4 font-semibold">Cachet 1</th>
-                            <th class="p-4 font-semibold">Cachet 2</th>
-                            <th class="p-4 font-semibold">Chant</th>
-                            <th class="p-4 font-semibold">Drums</th>
-                            <th class="p-4 font-semibold">Basse</th>
-                            <th class="p-4 font-semibold">Clavier</th>
-                            <th class="p-4 font-semibold">Commentaires</th>
+                    <thead class="sticky top-0 z-10">
+                        <tr class="bg-slate-900 border-b border-borderCol text-slate-200 text-xs uppercase tracking-wider text-center shadow-md">
+                            <th class="p-4 font-semibold bg-slate-900">Date</th>
+                            <th class="p-4 font-semibold bg-slate-900">Cachet 1</th>
+                            <th class="p-4 font-semibold bg-slate-900">Cachet 2</th>
+                            <th class="p-4 font-semibold bg-slate-900">Chant</th>
+                            <th class="p-4 font-semibold bg-slate-900">Drums</th>
+                            <th class="p-4 font-semibold bg-slate-900">Basse</th>
+                            <th class="p-4 font-semibold bg-slate-900">Clavier</th>
+                            <th class="p-4 font-semibold bg-slate-900">Commentaires</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-borderCol text-sm text-center">
@@ -114,10 +114,8 @@
         function getMusicianBadge(cellValue) {
             if (!cellValue || cellValue.trim() === "") return "";
             
-            // Extrait uniquement le nom principal (tout ce qui est avant la parenthèse)
             const mainNamePart = cellValue.split('(')[0].trim().toLowerCase();
             
-            // Couleur rouge/brique unique pour tous les autres musiciens (exceptions)
             let bgClass = "bg-red-950 text-red-200 border border-red-700";
 
             if (mainNamePart.includes("nas")) bgClass = "bg-purple-900 text-purple-200 border border-purple-500";
