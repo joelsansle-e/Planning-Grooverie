@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planning Jam Sessions</title>
+    <title>Planning OG Jam</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,8 +28,8 @@
     <div class="max-w-6xl mx-auto">
         <!-- En-tête -->
         <header class="mb-8 text-center">
-            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning des Jam Sessions</h1>
-            <p class="text-slate-400 text-sm">v19</p>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">Planning OG Jam</h1>
+            <p class="text-slate-400 text-sm">v20</p>
         </header>
 
         <!-- Filtres -->
@@ -192,7 +192,6 @@
         }
 
         function setDefaultCurrentMonth() {
-            // Sélectionne automatiquement le mois en cours (ex: "11" pour novembre)
             const currentMonthNum = String(new Date().getMonth() + 1).padStart(2, '0');
             const monthSelect = document.getElementById("filterMonth");
             monthSelect.value = currentMonthNum;
