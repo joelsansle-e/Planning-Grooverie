@@ -134,6 +134,12 @@
         </div>
     </div>
 
+    <!-- Modale Profil Musicien -->
+    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 hidden"></div>
+
+    <!-- Fichier externe des profils -->
+    <script src="musiciens.js"></script>
+
     <script>
         const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1EgkCv-Qn9tqAoZNuWedt0P-i3yUZHi_U2iVEV0QIr14/gviz/tq?tqx=out:csv&sheet=Planning_Master";
 
@@ -224,10 +230,58 @@
             }).join('');
         }
 
+        function openMusicianProfile(musicianName) {
+            if (!musicianName || musicianName === "—" || musicianName === "/") return;
+            const cleanKey = removeAccents(musicianName.split('(')[0].trim());
+            const profile = (typeof musicianProfiles !== 'undefined' ? musicianProfiles[cleanKey] : null) || {
+                role: "Musicien OG Jam",
+                photo: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400",
+                instrument: "Instrument non spécifié",
+                bio: "Membre actif de l'équipe des Jams. Biographie à venir !",
+                quote: "« Prêt pour le prochain set. »"
+            };
+
+            const modalOverlay = document.getElementById("profileModal");
+            modalOverlay.onclick = (e) => {
+                if (e.target === modalOverlay) closeMusicianProfile();
+            };
+
+            modalOverlay.innerHTML = `
+                <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-2xl max-w-lg w-full p-6 md:p-8 shadow-2xl relative animate-in fade-in zoom-in duration-150">
+                    <button onclick="closeMusicianProfile()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 dark:hover:text-white p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold cursor-pointer transition-colors">✕</button>
+                    
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                        <img src="${profile.photo}" alt="${musicianName}" class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-lg border-2 border-indigo-500 shrink-0">
+                        
+                        <div class="text-center sm:text-left flex-1">
+                            <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mb-1">${escapeHTML(musicianName)}</h3>
+                            <div class="inline-block px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
+                                ${profile.role}
+                            </div>
+                            ${profile.instrument ? `<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">⚡ <strong>Matos / Poste :</strong> ${escapeHTML(profile.instrument)}</p>` : ''}
+                            ${profile.quote ? `<p class="text-xs italic text-slate-500 dark:text-slate-400">${profile.quote}</p>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-slate-200 dark:border-borderCol">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Biographie</h4>
+                        <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">${parseFormatting(profile.bio)}</p>
+                    </div>
+                </div>
+            `;
+            modalOverlay.classList.remove("hidden");
+        }
+
+        function closeMusicianProfile() {
+            const modalOverlay = document.getElementById("profileModal");
+            modalOverlay.classList.add("hidden");
+        }
+
         function getMusicianBadge(cellValue, large = false) {
             if (!cellValue || cellValue.trim() === "") return `<span class="text-slate-400 italic text-xs">—</span>`;
             
             const mainNamePart = cellValue.split('(')[0].trim().toLowerCase();
+            const cleanNameForClick = cellValue.split('(')[0].trim();
             
             let bgClass = "bg-red-950 text-red-200 border border-red-700";
 
@@ -239,7 +293,7 @@
             else if (mainNamePart.includes("jo")) bgClass = "bg-emerald-600 text-emerald-50 font-bold";
 
             const sizeClass = large ? "px-4 py-2 text-sm md:text-base font-semibold" : "px-2.5 py-1 text-xs";
-            return `<span class="${sizeClass} rounded-md inline-block shadow-sm ${bgClass}">${escapeHTML(cellValue)}</span>`;
+            return `<span onclick="event.stopPropagation(); openMusicianProfile('${escapeHTML(cleanNameForClick)}')" class="${sizeClass} rounded-md inline-block shadow-sm ${bgClass} cursor-pointer hover:opacity-80 transition-opacity" title="Voir le profil">${escapeHTML(cellValue)}</span>`;
         }
 
         async function loadSheetData() {
@@ -459,7 +513,6 @@
                     ? "bg-indigo-50/80 dark:bg-indigo-950/35" 
                     : "bg-white dark:bg-slate-800/40";
                 
-                // Vérifie si la ligne affichée correspond exactement à la vraie prochaine session globale
                 const isNext = nextSessionRow && (row[0] === nextSessionRow[0] && row[1] === nextSessionRow[1]);
                 if (isNext) {
                     rowBgClass = "bg-indigo-100 dark:bg-indigo-600/30 border-l-4 border-indigo-500 dark:border-indigo-400";
@@ -504,7 +557,6 @@
             const row = currentFilteredData[index];
             if (!row) return;
 
-            // Vérifie si la session cliquée est bien la vraie prochaine session globale
             const nextSessionGlobalIdx = findNextSessionIndex(allData);
             const nextSessionRow = allData[nextSessionGlobalIdx];
             const isNext = nextSessionRow && (row[0] === nextSessionRow[0] && row[1] === nextSessionRow[1]);
@@ -551,17 +603,14 @@
 
             document.getElementById("detailContent").innerHTML = `
                 <div class="bg-white dark:bg-cardBg border border-slate-200 dark:border-borderCol rounded-2xl p-6 md:p-10 shadow-xl transition-colors">
-                    <!-- En-tête de la fiche centré -->
                     <div class="border-b border-slate-200 dark:border-borderCol pb-6 mb-8 text-center">
                         ${badgeNext}
                         <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white capitalize">${prettyDate}</h2>
                     </div>
 
-                    <!-- Grille de l'équipe (2 étages : Cachets en haut, Reste en dessous) -->
                     <div class="mb-8">
                         <h3 class="text-sm md:text-base font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Équipe & Line-up</h3>
                         
-                        <!-- 1er étage : Cachet 1 & Cachet 2 -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70 flex flex-col justify-between">
                                 <span class="text-xs font-semibold uppercase text-slate-400 mb-2">Cachet 1</span>
@@ -573,23 +622,22 @@
                             </div>
                         </div>
 
-                        <!-- 2ème étage : Chant, Drums, Basse, Clavier -->
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Chant</span>
-                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(chant)}</span>
+                                <div>${getMusicianBadge(chant)}</div>
                             </div>
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Drums</span>
-                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(drums)}</span>
+                                <div>${getMusicianBadge(drums)}</div>
                             </div>
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Basse</span>
-                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(basse)}</span>
+                                <div>${getMusicianBadge(basse)}</div>
                             </div>
                             <div class="p-4 rounded-xl bg-slate-50 dark:bg-darkBg/50 border border-slate-200 dark:border-borderCol/70">
                                 <span class="block text-xs font-semibold uppercase text-slate-400 mb-1">Clavier</span>
-                                <span class="text-base md:text-lg font-bold text-slate-900 dark:text-white">${escapeHTML(clavier)}</span>
+                                <div>${getMusicianBadge(clavier)}</div>
                             </div>
                         </div>
                     </div>
