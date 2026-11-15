@@ -2,7 +2,9 @@ const musicianProfiles = {
     "nas": {
         role: "Chant / Lead",
         photo: "photos/nas.png",
-        bio: "Chanteur principal et pilier des jams. Toujours là pour ambiancer le set avec un groove infaillible."
+        instrument: "La plume",
+        bio: "**NotaBene** (de son vrai nom Nassim Bedrane) est un amoureux des mots. Que ce soit en anglais ou en français, il met sa science de la tournure et de la mélodie au profit de nombreux projets lyonnais depuis 2013.\n\nAncien rappeur et MC d’**Electrophazz** (2013-2018) et de **Supa Dupa** (2015-2018), il écrit la majeure partie de leurs albums et EP respectifs. En tant qu’auteur, il collabore ponctuellement avec des artistes émérites, telles que **Macy Lu** et **Célia Kameni** entre autres, et co-écrit l’album *CUBE* de la très talentueuse **Thaïs Lona**, sorti en 2022.\n\nRappeur, chanteur, compositeur, topliner, ghostwriter polyglotte, NotaBene est un véritable couteau-suisse de la musique hip-hop.",
+        quote: "« C'est 1 morceau par personne »"
     },
     "shan": {
         role: "Guitare / Cachet",
