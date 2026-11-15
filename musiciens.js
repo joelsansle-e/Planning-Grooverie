@@ -1,7 +1,7 @@
 const musicianProfiles = {
     "nas": {
         role: "Chant / Lead",
-        photo: "photos/nas.jpg",
+        photo: "photos/nas.png",
         bio: "Chanteur principal et pilier des jams. Toujours là pour ambiancer le set avec un groove infaillible."
     },
     "shan": {
