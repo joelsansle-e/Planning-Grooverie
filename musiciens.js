@@ -3,63 +3,70 @@ const musicianProfiles = {
         role: "Rap / Chant / Lead",
         photo: "photos/nas.png",
         instrument: "La plume",
-        bio: "**NotaBene** (de son vrai nom Nassim Bedrane) est un amoureux des mots. Que ce soit en anglais ou en français, il met sa science de la tournure et de la mélodie au profit de nombreux projets lyonnais depuis 2013.\n\nAncien rappeur et MC d’**Electrophazz** (2013-2018) et de **Supa Dupa** (2015-2018), il écrit la majeure partie de leurs albums et EP respectifs. En tant qu’auteur, il collabore ponctuellement avec des artistes émérites, telles que **Macy Lu** et **Célia Kameni** entre autres, et co-écrit l’album *CUBE* de la très talentueuse **Thaïs Lona**, sorti en 2022.\n\nRappeur, chanteur, compositeur, topliner, ghostwriter polyglotte, NotaBene est un véritable couteau-suisse de la musique hip-hop.",
+        bio: "**NotaBene 2.0** (de son vrai nom NotaBene) est un amoureux des mots. Athlète du groove capable d'enchaîner un five, un playground de basket et un concert dans la même journée, Nas est l'incarnation vivante de l'esprit rap appliqué à la scène.\n\nToujours prêt à tenter une passe décisive en pleine improvisation comme sur un terrain, il pilote la scène avec une énergie inépuisable.",
         quote: "« Désolé y'a trop de monde c'est 1 morceau par personne »"
     },
     "shan": {
         role: "Batterie",
         photo: "photos/shan.png",
         instrument: "Baguettes magiques qui ajoutent 15dB à la snare",
-        bio: "Batteur redoutable et caméléon de la scène, Shan a débuté son parcours en studio à Bordeaux avant de multiplier les collaborations et les tournées internationales en France, en Belgique et en Chine.\n\nQu'il s'agisse de porter l'afro-pop de Pamela Badjogo, d'explorer le jazz, le rock ou le gospel, il impose une précision et une énergie indispensables à chaque session.",
-        quote: "« Haribo / Fromage / Mini-saucissons »"
+        bio: "Batteur à l'énergie débordante, Shan conçoit la batterie comme un sport de contact où chaque frappe compte double et chaque solo mérite son propre entracte.\n\nReconnaissable à son légendaire t-shirt subtilement détourné en « Rum & Ass », il ne monte jamais sur scène sans son kit de survie réglementaire : Haribo, fromage et mini-saucissons.",
+        quote: "« Qui est chaud pour un baby ? »"
     },
     "mat": {
         role: "Batterie",
         photo: "photos/mat.png",
         instrument: "Métronome",
-        bio: "Batteur incontournable des scènes jam, Mat apporte une assise rythmique implacable et un sens du groove redoutable à chaque session.\n\nToujours à l'écoute des autres musiciens, il sait faire respirer la musique et relancer l'énergie au moment parfait de l'improvisation.",
+        bio: "Plus ancien membre de l'équipage, Mat pilote les fûts avec l'assurance des vétérans et une discothèque idéale bloquée dans les années 90.\n\nQuand il ne pose pas un groove old school redoutable, il occupe le reste de son temps à tester la résistance mentale du groupe avec ses blagues graveleuses et ses punchlines de daron.",
         quote: "« .»"
     },
     "jo": {
         role: "Clavier",
         photo: "photos/jo.png",
         instrument: "iReal Pro",
-        bio: "Pianiste et claviériste ancré sur la scène lyonnaise, Joël insuffle une profondeur harmonique singulière à chaque session grâce à son toucher organique.\n\nActif au sein du Célia Tiab Trio et du projet Yūcid, il cisèle ses voicings avec une rigueur et une subtilité qui redéfinissent l'espace sonore en direct.",
-        quote: "« Y'a pas d'autres claviériste ? »"
+        bio: "Homme de très, très, très peu de mots, Jo préfère laisser ses doigts parler à sa place — ce qui tombe plutôt bien puisqu'il n'y a jamais d'autre claviériste pour le relayer de toute la soirée.\n\nS'il économise sa salive au maximum, il ne rate jamais une occasion de glisser une remarque pince-sans-rire entre deux morceaux d'Amy Winehouse.",
+        quote: "« . . . »"
     },
     "flo": {
         role: "Basse",
         photo: "photos/flo.png",
         instrument: "Pedalboard non partagé",
-        bio: "Professeur de basse aguerri sur la scène lyonnaise et musicien de plateau, Florian ancre chaque session avec un groove massif et une précision redoutable.\n\nQu'il s'agisse d'accompagner des projets pop/soul comme Emma Doo ou de porter le bas du spectre en improvisation, il sait exactement faire respirer le morceau et lier la rythmique avec efficacité.",
+        bio: "Maître incontesté du commentaire acéré, Flo possède deux grandes passions dans la vie : poser des lignes de basse millimétrées et bitcher sur tout ce qui bouge avec un flegme olympien.\n\nAdepte invétéré du vélo au quotidien, il troque volontiers sa selle contre un volant en fin de soirée pour assurer le service de raccompagnement officiel vers Villeurbanne.",
         quote: "« Putain il est armoire lui »"
     },
     "tony": {
         role: "Basse",
         photo: "photos/tony.png",
         instrument: "Bucket KFC",
-        bio: "Bassiste polyvalent aux racines profondément ancrées dans le groove, le gospel et le hip-hop, Tony insuffle une énergie redoutable et un sens inné du placement à chaque session.\n\nActif sur la scène lyonnaise, il manie la basse avec une science du rebond et une richesse rythmique qui portent aussi bien les grilles soul que les beats urbains.",
+        bio: "Non content d'encombrer la scène avec une basse ET un keybass comme si un seul instrument ne suffisait pas, Tony carbure exclusivement aux buckets de KFC et à la cuisine asiatique.\n\nEntre deux morceaux, son passe-temps favori consiste à imiter JP — une performance vocale qui, au fil du temps, dérive lentement mais sûrement vers le Père Fouras.",
         quote: "« AAAaaaaahhhHHHHhhhaaaaaaa (imitation JP) »"
     },
     "pierre-louis": {
         role: "Clavier",
         photo: "photos/pl.png",
         instrument: "Doigts supersoniques",
-        bio: "Claviériste et architecte sonore au cœur de la scène nu-jazz et hip-hop instrumentale lyonnaise, Pierre-Louis insuffle une énergie moderne et organique à chaque projet.\n\nPilier du groupe SHIBUUYA! et coutumier des explorations entre jazz, broken beat et textures électroniques, il fusionne des harmonies sophistiquées et le grain d'un sampleur pour repousser les frontières de l'improvisation.",
-        quote: "«. »"
+        bio: "Nourri au hip-hop, au jazz fusion et aux animés japonais, PL possède des doigts qui vont officiellement plus vite que le processeur de son propre clavier.\n\nCapable de placer trois accords de jazz ultra-pointus le temps que les autres musiciens clignent des yeux, il applique la rigueur des samouraïs à chaque solo et fait passer la gamme chromatique pour une promenade de santé.",
+        quote: "« Ikuzo »"
     },
     "celia": {
         role: "Chant",
         photo: "photos/celia.png",
         instrument: "Cordes vocales divines",
-        bio: "Portée par des influences chaleureuses ancrées dans les sonorités soul, R&B et jazz, Célia Tiab navigue entre textures intimes et groove subtil avec une sensibilité désarmante.\n\nAprès un premier EP remarqué avec *Cécé*, elle poursuit son exploration artistique avec la sortie de *Comfortable Silence*, affirmant une écriture toujours plus ciselée et une aura organique taillée pour la scène.",
-        quote: "« .»"
+        bio: "Officiellement sacrée meilleure voix de Lyon, Célia partage avec Flo une passion dévorante pour le bitchage de haute précision — un sport de groupe qu'elle pratique avec un sens du détail redoutable.\n\nCapable d'électriser n'importe quelle salle avec ses vibes chirurgicales, elle possède néanmoins un point faible fatal : La Grooverie, d'où elle ne ressort jamais sans avoir attrapé tous les rhumes de la salle et finit clouée au lit dès le lendemain.",
+        quote: "« . »"
     },
     "felix": {
         role: "Clavier",
         photo: "photos/felix.png",
         instrument: "Bière",
-        bio: "Pianiste et claviériste au parcours éclectique, Félix insuffle une science harmonique rigoureuse et un groove chaleureux à chaque projet.\n\nActif aux côtés de formations comme The Bongo Hop ou de projets jazz et world, il manie les claviers avec une élégance organique qui équilibre à la perfection finesse mélodique et rebond rythmique.",
-        quote: "«. »"
+        bio: "Orfèvre absolu des ambiances soul et funk, Félix fait groover ses machines avec une insolence déconcertante.\n\nDoté d'un humour bien à lui qui laisse régulièrement la pièce dans un silence interlope, il compense ce mystère par un engagement sans faille : il ne refuse absolument jamais l'invitation à aller boire un coup.",
+        quote: "« . »"
+    },
+    "lauralyn": {
+        role: "Chant",
+        photo: "photos/lauralyn.jpg",
+        instrument: "Les années 90",
+        bio: "Véritable encyclopédie vivante des tubes des années 90 et 2000, Lauralyn pose sa voix sur scène avec la même assurance que si elle sortait tout droit d'un clip de MTV.\n\nToujours prête à lancer une petite pique au second degré, elle manie l'art de la taquinerie avec brio et n'a absolument aucun filtre lorsqu'il s'agit de remettre les pendules à l'heure.",
+        quote: "« . »"
     },
 };
